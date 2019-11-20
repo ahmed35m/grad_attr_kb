@@ -96,7 +96,7 @@ function renderAddOption(){
 
 
 function renderModalAdd(){
-	
+	/*
 	var wrapper = document.createElement('div');
 	var container= document.createElement('div');
 	var textnode = document.createTextNode('Add a Graduate Attribute');
@@ -116,7 +116,9 @@ function renderModalAdd(){
 	
 	$(container).append(textnode).append(form).addClass('modal_container');
 	$(wrapper).append(container);
-	
+	*/
+
+	var modal = $('<div class="modal" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modal title</h5>  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p>Modal body text goes here.</p></div><div class="modal-footer"> <button type="button" class="btn btn-primary">Save changes</button><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div> </div>');
 	
 	
 	// var test = $('<!-- Modal -->  <div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><!-- Modal content--><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>          <h4 class="modal-title">Modal Header</h4></div><div class="modal-body"><p>Some text in the modal.</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div>	</div>');
