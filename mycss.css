@@ -1,5 +1,4 @@
 .ga_master{
-border: 2px solid red;
 margin: 5px;
 padding: 15px;
 }
@@ -8,8 +7,6 @@ padding: 15px;
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-	z-index: 10;
-
 }
 
 .modal_form{
@@ -61,22 +58,25 @@ padding: 15px;
     justify-content: space-between;
 }
 .ga{
-	background-color : #c8fdda;
-	border: 2px solid blue;
+	background-color : #2E64FE;
+	border: 2px solid #E6E6E6;
+	border-radius: 5px;
 
 }
 .sub_ga{
-		background-color : #f8fdda;
+		background-color : white;
 
 }
 
 .ga_label{
 	display: flex;
 	flex-direction: row;
+	color: white;
 }
 .sub_ga_label{
 	display: flex;
 	flex-direction: row;
+	color: black;
 }
 
 .label_numb	{
@@ -85,6 +85,7 @@ padding: 15px;
 	margin: 15px;
 	font-size: 20px;
 	font-weight: bold;
+	color: white;
 }
 .sub_n{
 	display: flex;
@@ -92,6 +93,7 @@ padding: 15px;
 	margin: 20px;
 	font-size: 16px;
 	font-weight: bold;
+	color: black;
 }
 	
 .label_title{
@@ -113,8 +115,14 @@ padding: 15px;
 }
 	
 .edit_box{
-	display: flex;
+	text-align: right; 
 	color: white;
 	margin: 5px ;
-}	
+}
+
+.icon{
+	text-align: center;
+	flex-direction: row;
+	
+}
 	
