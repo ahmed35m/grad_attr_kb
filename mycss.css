@@ -26,7 +26,7 @@ padding: 15px;
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .active, .collapsible:hover {
@@ -34,7 +34,7 @@ padding: 15px;
 }
 
 .content {
-  padding: 0 18px;
+  padding: 0 15px;
   display: none;
   overflow: hidden;
   background-color: #f1f1d1;
@@ -54,17 +54,19 @@ padding: 15px;
 	display: flex;
 	flex-direction: row;
 	align-content: center;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
 }
 .ga{
 	background-color : #2E64FE;
 	border: 2px solid #E6E6E6;
 	border-radius: 5px;
+	margin-top: 5px;
 
 }
 .sub_ga{
-		background-color : white;
+		background-color : rgb(243, 243, 243);
+		transition: height 0.5s;
 
 }
 
@@ -72,6 +74,8 @@ padding: 15px;
 	display: flex;
 	flex-direction: row;
 	color: white;
+	align-items: baseline;
+	flex-grow: 2;
 }
 .sub_ga_label{
 	display: flex;
@@ -91,7 +95,7 @@ padding: 15px;
 	display: flex;
 	flex-direction: row;
 	margin: 20px;
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: bold;
 	color: black;
 }
@@ -100,7 +104,7 @@ padding: 15px;
 	display: flex;
     flex-direction: row;
    	margin: 15px;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: bold;
 
 }
@@ -109,12 +113,13 @@ padding: 15px;
 	display: flex;
     flex-direction: row;
    	margin: 20px;
-	font-size: 18px;
+	font-size: 15px;
 	font-weight: bold;
 
 }
 	
 .edit_box{
+	display: flex;
 	text-align: right; 
 	color: white;
 	margin: 5px ;
@@ -125,4 +130,6 @@ padding: 15px;
 	flex-direction: row;
 	
 }
-	
+.override_ftr{
+	justify-content: space-between !important;
+}
