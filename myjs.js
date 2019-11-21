@@ -63,7 +63,6 @@ function createGA(){
 	
 	ga_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 	
-	
 	ga_add_icon =$('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 	$(ga_edit).append(ga_add_icon);
 	
@@ -87,9 +86,10 @@ function createGA(){
 
 function renderAddOption(){
 	var add_wrapper = document.createElement('div');
+	var add_label = $('<label >Add GA</label>');
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg" , "textpath");
 		ga_add_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
-	$(add_wrapper).append(ga_add_icon).addClass('icon');;
+	$(add_wrapper).append(ga_add_icon).append(add_label).addClass('ga_add_btn icon');
 
 	$('#GA_MASTER').append(add_wrapper);
 }
