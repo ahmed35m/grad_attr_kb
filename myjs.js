@@ -123,6 +123,7 @@ function createGA(numb, title) {
 function renderAddOption() {
 	var add_wrapper = document.createElement('div');
 	var add_label = $('<label1 class = add_button_label >Add GA</label>');
+	add_wrapper.addEventListener('click', function(){renderModalAdd();});
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	//ga_add_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
 	$(add_wrapper).addClass('ga_add_btn icon').append(add_label);
