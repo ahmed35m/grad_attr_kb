@@ -126,10 +126,25 @@ padding: 15px;
 }
 
 .icon{
-	text-align: center;
+	text-align: right;
 	flex-direction: row;
 	
 }
 .override_ftr{
 	justify-content: space-between !important;
+}
+.ga_add_btn{
+	
+	background-color : #FFFFFF;
+	margin: 1000px 0px 10px 1006px;
+	border: 2px solid #2E64FE;
+	border-radius: 5px;
+	margin-top: 5px;
+	column: right;
+}
+
+.add_button_label{
+	color: #2E64FE;
+	text-align: center;
+	font-weight: bold;
 }
