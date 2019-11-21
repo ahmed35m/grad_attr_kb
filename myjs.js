@@ -1,3 +1,4 @@
+var GLOBAL_ACCESS = 3;
 window.onload = function () {
 	responseHandler(fakeGetRequest());
 	//createGA();
@@ -191,7 +192,7 @@ function editAcces(){
 function fakeGetRequest() {
 
 	var resp = {
-		access: 3,
+		access: GLOBAL_ACCESS,
 		"GA": [{
 				"id": "",
 				"number": 1,
