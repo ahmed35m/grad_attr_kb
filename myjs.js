@@ -127,3 +127,72 @@ function renderModalAdd(){
 }
 
 
+
+
+function fakeGetRequest(){
+
+	var resp = {
+		"GA": [{
+				"id": "",
+				"number": 1,
+				"title": "A Knowledgebase for Engineering",
+				"description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. ",
+				"sub_ga": [{
+						"number": 1.1,
+						"title": "Create mathematical expressions to describe physical phenomena (or a physical problem)."
+					},
+					{
+						"number": 1.2,
+						"title": "Select and describe appropriate tools to solve mathematical problems that arise from modeling physical phenomena."
+					},
+	
+					{
+						"number": 1.3,
+						"title": "Use solution to mathematical problems to inform the (real-world problem) that gave rise to it."
+					},
+					 {
+						"number": 1.4,
+						"title": "Identify fundamental scientific and engineering principles that govern the performance of a given process or system."
+					},
+					{
+						"number": 1.5,
+						"title": "Recall and describe fundamental concepts in natural sciences."
+						}
+	
+				]
+			},
+			{
+				"id": "",
+				"number": 2,
+				"title": "Problem Analysis",
+				"description": "An ability to use appropriate knowledge and skills to identify, formulate, analyze, and solve complex engineering problems in order to reach substantiated conclusions.",
+				"sub_ga": [{
+						"number": 2.1,
+						"title": "Create processes for solving problems including justified approximations and assumptions.."
+					},
+					{
+						"number": 2.2,
+						"title": "Evaluate validity of results and model for error/uncertainty."
+					},
+	
+					{
+						"number": 2.3,
+						"title": "Reframe complex problems into interconnected sub-problems, using a systems approach."
+					},
+					 {
+						"number": 2.4,
+						"title": "Identify known and unknown information, uncertainties, and biases in complex ill-structured problems"
+					}
+				
+				]
+			}
+		]
+	};
+
+
+
+	return resp;
+
+
+
+}
