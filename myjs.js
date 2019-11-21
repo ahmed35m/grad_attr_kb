@@ -1,5 +1,6 @@
 window.onload = function() {
-  createGA();
+	responseHandler(fakeGetRequest());
+	//createGA();
   renderAddOption();
 };
 
@@ -10,7 +11,32 @@ function loadGA(obj){
 
 
 
-function createSubGA(source){
+function responseHandler (resp){
+
+	if (resp == null){
+		var err = $(`<div class="card">	<div class="card-body">	Something Went Wrong :/
+					</div>`);
+		$('#GA_MASTER').append(err);
+	}
+
+	$.each(resp.GA, function (indexInArray, valueOfElement) { 
+		 console.log(resp.GA[indexInArray].title);
+		 createGA( resp.GA[indexInArray].number, resp.GA[indexInArray].title);
+		$.each(resp.GA[indexInArray].sub_ga, function (indexInSubArray, el) { 
+			 createSubGA(resp.GA[indexInArray].sub_ga[indexInSubArray]);
+		});
+	
+	
+		});
+
+
+
+
+}
+
+
+
+function createSubGA(data){
 	
 	var wrapper = document.createElement('div');
 	wrapper.title = "Sub Graduate Attribute";
@@ -27,9 +53,9 @@ function createSubGA(source){
 	var ga_icon	= document.createElementNS("http://www.w3.org/2000/svg" , "textpath");
 		ga_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 
-	$(ga_instance).attr('id', '1').attr('name', 'grad_attr').addClass(' grad_attr');
-	$(ga_n).text('1.1').addClass('sub_n');
-	$(ga_title).text('Writing Technical').addClass('sub_title');
+	$(ga_instance).attr('id', data.number).attr('name', 'grad_attr').addClass(' grad_attr');
+	$(ga_n).text(data.number).addClass('sub_n');
+	$(ga_title).text(data.title).addClass('sub_title');
 	$(ga_edit).addClass('edit_box').append(ga_icon);
 	
 	
@@ -38,13 +64,15 @@ function createSubGA(source){
 	$(ga_instance).append(ga_label).append(ga_edit);	
 	$(wrapper).append(ga_instance);	
 	
-	var tar = $(source).siblings('.sub_ga');
+	var  src_id = Math.trunc(data.number) ;
+	var source =  $('#'+src_id); //$('#').siblings();
+	var tar = $(source).siblings('.sub_ga'); 
 	$(tar).append(wrapper);
 
 
 };
 
-function createGA(){
+function createGA( numb, title){
 		
 	var wrapper = document.createElement('div');
 	wrapper.title = "container_ga";
@@ -66,14 +94,14 @@ function createGA(){
 	ga_add_icon =$('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 	$(ga_edit).append(ga_add_icon);
 	
-	$(ga_instance).attr('id', '1').attr('name', 'grad_attr').addClass('grad_attr');
-	$(ga_n_label).text('1').addClass('label_numb');
-	$(ga_title_label).text('Communications').addClass('label_title');
+	$(ga_instance).attr('id', numb).attr('name', 'grad_attr').addClass('grad_attr');
+	$(ga_n_label).text(numb).addClass('label_numb');
+	$(ga_title_label).text(title).addClass('label_title');
 	$(ga_edit).addClass('edit_box').append(ga_icon);
 	$(ga_label).addClass('ga_label');
 	
 	$(sub_ga).addClass('sub_ga');
-	ga_instance.addEventListener('click', function(){ createSubGA(this) } );
+	//ga_instance.addEventListener('click', function(){ createSubGA(this) } );
 	$(ga_label).append(ga_n_label).append(ga_title_label);
 	$(ga_instance).append(ga_label).append(ga_edit);	
 	$(wrapper).append(ga_instance).append(sub_ga);	
