@@ -2,7 +2,7 @@ var GLOBAL_ACCESS = 3;
 window.onload = function () {
 	responseHandler(fakeGetRequest());
 	//createGA();
-	
+
 };
 
 
@@ -29,8 +29,9 @@ function responseHandler(resp) {
 
 
 	});
-	if (editAcces()){
-	renderAddOption(); }
+	if (editAcces()) {
+		renderAddOption();
+	}
 
 }
 
@@ -48,20 +49,22 @@ function createSubGA(data) {
 	var ga_title = document.createElement('label');
 	var ga_label = document.createElement('label');
 
-	if (editAcces()){
-	var ga_edit = document.createElement('div');
-	ga_edit.title = "Edit Sub Attribute";
-	var ga_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
-	ga_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-	$(ga_edit).addClass('edit_box').append(ga_icon);
-	let  d = new Object();
-	d.title = data.title;
-	ga_edit.addEventListener('click',function(){ renderModalEdit(d); });	
+	if (editAcces()) {
+		var ga_edit = document.createElement('div');
+		ga_edit.title = "Edit Sub Attribute";
+		var ga_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
+		ga_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+		$(ga_edit).addClass('edit_box').append(ga_icon);
+		let d = new Object();
+		d.title = data.title;
+		ga_edit.addEventListener('click', function () {
+			renderModalEdit(d);
+		});
 	}
 	$(ga_instance).attr('id', data.number).attr('name', 'grad_attr').addClass(' grad_attr');
 	$(ga_n).text(data.number).addClass('sub_n');
 	$(ga_title).text(data.title).addClass('sub_title');
-	
+
 
 
 	$(ga_label).addClass('sub_ga_label').append(ga_n).append(ga_title);
@@ -95,19 +98,23 @@ function createGA(numb, title) {
 	ga_a.title = 'Add a sub attribute';
 	ga_e.title = 'Edit Graduate Attribute';
 	var d = new Object();
-	if (editAcces()){
-	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
-	var ga_edit_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
-	ga_edit_icon = $('<div class="edit_ga_btn" id="'+numb+'_edit" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
-	ga_add_icon = $('<div class="add_sub_btn" id="'+numb+'_add"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
-	$(ga_a).append(ga_add_icon);
-	$(ga_e).append(ga_edit_icon);
-	ga_a.addEventListener('click', function(){renderModalAdd();});
-	d.title = title;
-	d.numb = numb;
-	ga_e.addEventListener('click', function(){renderModalEdit(d);});
+	if (editAcces()) {
+		var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
+		var ga_edit_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
+		ga_edit_icon = $('<div class="edit_ga_btn" id="' + numb + '_edit" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
+		ga_add_icon = $('<div class="add_sub_btn" id="' + numb + '_add"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
+		$(ga_a).append(ga_add_icon);
+		$(ga_e).append(ga_edit_icon);
+		ga_a.addEventListener('click', function () {
+			renderModalAdd();
+		});
+		d.title = title;
+		d.numb = numb;
+		ga_e.addEventListener('click', function () {
+			renderModalEdit(d);
+		});
 
-	$(ga_edit).append(ga_a);	
+		$(ga_edit).append(ga_a);
 	}
 	$(ga_instance).attr('id', numb).attr('name', 'grad_attr').addClass('grad_attr');
 	$(ga_n_label).text(numb).addClass('label_numb');
@@ -116,7 +123,9 @@ function createGA(numb, title) {
 	$(ga_label).addClass('ga_label');
 
 	$(sub_ga).addClass('sub_ga');
-	ga_label.addEventListener('click', function(){ toggleVisibility(this) } );
+	ga_label.addEventListener('click', function () {
+		toggleVisibility(this)
+	});
 	$(ga_label).append(ga_n_label).append(ga_title);
 	$(ga_instance).append(ga_label).append(ga_edit);
 	$(wrapper).append(ga_instance).append(sub_ga);
@@ -129,7 +138,9 @@ function createGA(numb, title) {
 function renderAddOption() {
 	var add_wrapper = document.createElement('div');
 	var add_label = $('<button type="button" class="btn btn-outline-primary2">Add GA</button>');
-	add_wrapper.addEventListener('click', function(){renderModalAdd();});
+	add_wrapper.addEventListener('click', function () {
+		renderModalAdd();
+	});
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	//ga_add_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
 	$(add_wrapper).addClass('ga_add_btn').append(add_label);
@@ -155,7 +166,9 @@ function renderModalAdd() {
 
 	// var test = $('<!-- Modal -->  <div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><!-- Modal content--><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>          <h4 class="modal-title">Modal Header</h4></div><div class="modal-body"><p>Some text in the modal.</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div>	</div>');
 	$('#GA_MASTER').append(modal);
-	$('#myModal').modal({focus: true});
+	$('#myModal').modal({
+		focus: true
+	});
 
 }
 
@@ -168,7 +181,7 @@ function renderModalEdit(data) {
 		<h5 class="modal_Add">Modify Graduate Attribute</h5>  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span></button></div><div class="modal-body">  
 			<label>Attribute Title:</label>
-			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="`+data.title+`">	
+			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="` + data.title + `">	
 			</div>
 			<div class="modal-footer override_ftr" > 
 			<div><button type="button" class="btn btn-outline-danger">Delete</button></div>
@@ -178,12 +191,14 @@ function renderModalEdit(data) {
 
 	// var test = $('<!-- Modal -->  <div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><!-- Modal content--><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>          <h4 class="modal-title">Modal Header</h4></div><div class="modal-body"><p>Some text in the modal.</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div>	</div>');
 	$('#GA_MASTER').append(modal);
-	$('#myModal').modal({focus: true});
+	$('#myModal').modal({
+		focus: true
+	});
 
 }
 
 
-function toggleVisibility(ref){
+function toggleVisibility(ref) {
 	console.log('Visibilit clicked');
 	var sub_ga = $(ref).parent().siblings('.sub_ga');
 	$(sub_ga).toggleClass('hidden');
@@ -191,9 +206,9 @@ function toggleVisibility(ref){
 
 }
 
-function editAcces(){
+function editAcces() {
 	let resp = fakeGetRequest();
-	return (resp.access>=3 ? true : false);
+	return (resp.access >= 3 ? true : false);
 }
 
 function fakeGetRequest() {
