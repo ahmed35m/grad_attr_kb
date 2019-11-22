@@ -50,9 +50,13 @@ function createSubGA(data) {
 
 	if (editAcces()){
 	var ga_edit = document.createElement('div');
+	ga_edit.title = "Edit Sub Attribute";
 	var ga_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	ga_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 	$(ga_edit).addClass('edit_box').append(ga_icon);
+	let  d = new Object();
+	d.title = data.title;
+	ga_edit.addEventListener('click',function(){ renderModalEdit(d); });	
 	}
 	$(ga_instance).attr('id', data.number).attr('name', 'grad_attr').addClass(' grad_attr');
 	$(ga_n).text(data.number).addClass('sub_n');
@@ -76,7 +80,6 @@ function createSubGA(data) {
 function createGA(numb, title) {
 
 	var wrapper = document.createElement('div');
-	wrapper.title = "container_ga";
 	wrapper.id = "ga1";
 	$(wrapper).addClass('ga');
 
@@ -84,16 +87,19 @@ function createGA(numb, title) {
 	var ga_n_label = document.createElement('label');
 	var ga_title = document.createElement('div');
 	var ga_label = document.createElement('div');
+	ga_label.title = 'Gaduate Attribute - click to toggle sub attributes';
 	var sub_ga = document.createElement('div');
 	var ga_edit = document.createElement('div');
 	var ga_a = document.createElement('div');
 	var ga_e = document.createElement('div');
+	ga_a.title = 'Add a sub attribute';
+	ga_e.title = 'Edit Graduate Attribute';
 	var d = new Object();
 	if (editAcces()){
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	var ga_edit_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
-	ga_edit_icon = $('<div class="add_sub_btn" id="'+numb+'_edit" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
-	ga_add_icon = $('<div class="edit_ga_btn" id="'+numb+'_add"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
+	ga_edit_icon = $('<div class="edit_ga_btn" id="'+numb+'_edit" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
+	ga_add_icon = $('<div class="add_sub_btn" id="'+numb+'_add"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
 	$(ga_a).append(ga_add_icon);
 	$(ga_e).append(ga_edit_icon);
 	ga_a.addEventListener('click', function(){renderModalAdd();});
@@ -106,7 +112,7 @@ function createGA(numb, title) {
 	$(ga_instance).attr('id', numb).attr('name', 'grad_attr').addClass('grad_attr');
 	$(ga_n_label).text(numb).addClass('label_numb');
 	$(ga_title).text(title).addClass('label_title');
-	$(ga_edit).addClass('edit_box').append(ga_a).append(ga_e);
+	$(ga_edit).addClass('edit_box_m').append(ga_a).append(ga_e);
 	$(ga_label).addClass('ga_label');
 
 	$(sub_ga).addClass('sub_ga');
@@ -122,7 +128,7 @@ function createGA(numb, title) {
 
 function renderAddOption() {
 	var add_wrapper = document.createElement('div');
-	var add_label = $('<label1 class = add_button_label >Add GA</label>');
+	var add_label = $('<button type="button" class="btn btn-outline-primary2">Add GA</button>');
 	add_wrapper.addEventListener('click', function(){renderModalAdd();});
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	//ga_add_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
