@@ -197,6 +197,40 @@ function renderModalEdit(data) {
 
 }
 
+function updateGA(numb, prev_title , new_title){
+
+	let temp = fakeGetRequest();
+	$.each(temp.GA, function (indexInArray, grad_attr) { 
+		if ( grad_attr.number == numb && grad_attr.title == prev_title){
+			grad_attr.title = new_title;		
+			return false
+		}	
+	});
+}
+
+function removeGA(numb, prev_title){
+	let temp = fakeGetRequest();
+	var index;
+	$.each(temp.GA, function (indexInArray, grad_attr) { 
+		if (  grad_attr.number == numb && grad_attr.title == prev_title){
+			index = indexInArray
+		}	
+	});
+	temp.GA.splice(index ,1);
+	$.each(temp.GA, function (indexInArray, grad_attr) { 
+		grad_attr.number = indexInArray+1;
+	});
+}
+
+
+function updateSubGA( numb, prev_title, new_title){
+
+}
+
+function removeSubGA( numb, prev_title){
+
+}
+
 
 function toggleVisibility(ref) {
 	console.log('Visibilit clicked');
