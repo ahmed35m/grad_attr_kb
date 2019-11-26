@@ -224,10 +224,54 @@ function removeGA(numb, prev_title){
 
 
 function updateSubGA( numb, prev_title, new_title){
+	let temp = fakeGetRequest();
+	$.each(temp.GA, function (indexInArray, ga_attr) { 
+		debugger
 
+		 if (Math.trunc(numb) == ga_attr.number){
+			 $.each(temp.GA[indexInArray].sub_ga, function (index, element) { 
+				  if (element.number == numb && element.title==prev_title){
+					  element.title = new_title;
+
+					  return false;
+				  }
+			 });
+		 }
+	});
+	
 }
 
 function removeSubGA( numb, prev_title){
+	var g_index;
+	var sub_index;
+	let temp = fakeGetRequest();
+	$.each(temp.GA, function (indexInArray, ga_attr) { 
+		 if (Math.trunc(numb) == ga_attr.number){
+			 $.each(temp.GA[indexInArray].sub_ga, function (s_index, element) { 
+				  if (element.number == numb && element.title==prev_title){
+						sub_index = s_index;
+						g_index = indexInArray;
+					  return false;
+				  }
+			 });
+		 }
+	});
+
+	temp.GA[g_index].sub_ga.splice(sub_index,1)
+
+	$.each(temp.GA, function (indexInArray, ga_attr) { 
+		if (Math.trunc(numb) == ga_attr){
+			$.each(temp.GA[indexInArray].sub_ga, function (s_index, element) { 
+				 	element.number = s_index+1;
+				});
+		}
+
+   });
+   debugger
+}
+
+function addSubGA(parent , s_title){
+
 
 }
 
