@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+</head>
+<body>
+<!-- Navigation Bar -->
+    <header class="header">
+      <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="#" class="sidebar-toggler text-gray-500"><i class="fas fa-align-left"><strong class="text-uppercase headings-font-family"> Menu</strong></i></a><a href="dashboard.html" class="navbar-brand font-weight-bold text-uppercase">Engineering Courses Management</a>
+        <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
+
+          <li class="nav-item dropdown ml-auto">
+          
+          <a id="userInfo" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
+<!-- User Avatar -->
+          <img src="img/avatar.jpg" alt="User" style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow">
+          </a>
+           
+            <div aria-labelledby="userInfo" class="dropdown-menu">
+            <a href="#" class="dropdown-item">
+            	<strong class="d-block text-uppercase headings-font-family" id="user_name"></strong>
+            		<small id="user_role"></small>
+            </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item">Settings</a>
+              <div class="dropdown-divider"></div>
+              <a href="login.html" class="dropdown-item">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    
+    
+    <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid">
+        <section class="py-5">
+        </section>
+        
+          <section class="py-5">
+            <div class="row justify-content-md-center">
+            
+<!-- My Classes Block -->
+              <div class="col col-lg-2" onclick="location.href='kb.html'">
+                <div class="card rounded frame-card bg-hover-gradient-blue">
+                  <div class="content d-flex flex-column justify-content-between p-5">
+                    <div class="d-flex justify-content-between align-items-end pt-4">
+                      <div class="text-uppercase">
+                        <div class="font-weight-bold d-block">Knowledge Base</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+<!-- Knowledge Base Block -->
+              <div class="col col-lg-2" onclick="location.href='QA.html'">
+                <div class="card rounded frame-card bg-hover-gradient-blue">
+                  <div class="content d-flex flex-column justify-content-between p-5">
+                    <div class="d-flex justify-content-between align-items-end pt-4">
+                      <div class="text-uppercase">
+                        <div class="font-weight-bold d-block">Q & A</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+          
+          
+
+          
+          </div>
+                  <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+              </div>
+              <div class="col-sm text-gray-400">
+                <p class="mb-0"><a href="https://www.uregina.ca/">&copy; 2019. University of Regina</a></p>
+              </div>
+              <div class="col-sm">
+              </div>
+            </div>
+          </div>
+        </footer>
+          </div>
+    
+
+
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="main.js"></script>
+</body>
+</html>
