@@ -222,6 +222,9 @@ function removeGA(numb, prev_title){
 	});
 }
 
+function addGA(){
+	
+}
 
 function updateSubGA( numb, prev_title, new_title){
 	let temp = fakeGetRequest();
