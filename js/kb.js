@@ -21,7 +21,7 @@ function responseHandler(resp) {
 	}
 
 	$.each(resp.GA, function (indexInArray, valueOfElement) {
-		console.log(resp.GA[indexInArray].title);
+		// consoleconsole.log(resp.GA[indexInArray].title);
 		createGA(resp.GA[indexInArray].number, resp.GA[indexInArray].title);
 		$.each(resp.GA[indexInArray].sub_ga, function (indexInSubArray, el) {
 			createSubGA(resp.GA[indexInArray].sub_ga[indexInSubArray]);
@@ -57,7 +57,9 @@ function createSubGA(data) {
 		$(ga_edit).addClass('edit_box').append(ga_icon);
 		let d = new Object();
 		d.title = data.title;
-		ga_edit.addEventListener('click', function () {
+		d.number = data.number;
+		d.type = 'subga';
+			ga_edit.addEventListener('click', function () {
 			renderModalEdit(d);
 		});
 	}
@@ -99,6 +101,10 @@ function createGA(numb, title) {
 	ga_e.title = 'Edit Graduate Attribute';
 	var d = new Object();
 	if (editAcces()) {
+		d.title = title;
+		d.number = numb;
+		d.type= 'ga';
+		
 		var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 		var ga_edit_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 		ga_edit_icon = $('<div class="edit_ga_btn" id="' + numb + '_edit" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></div>');
@@ -106,10 +112,9 @@ function createGA(numb, title) {
 		$(ga_a).append(ga_add_icon);
 		$(ga_e).append(ga_edit_icon);
 		ga_a.addEventListener('click', function () {
-			renderModalAdd();
+			renderModalAdd(d);
 		});
-		d.title = title;
-		d.numb = numb;
+
 		ga_e.addEventListener('click', function () {
 			renderModalEdit(d);
 		});
@@ -130,7 +135,7 @@ function createGA(numb, title) {
 	$(ga_instance).append(ga_label).append(ga_edit);
 	$(wrapper).append(ga_instance).append(sub_ga);
 	$("#GA_MASTER").append(wrapper);
-	console.log('Grad Attr Instance created');
+	// console.log('Grad Attr Instance created');
 
 };
 
@@ -139,7 +144,9 @@ function renderAddOption() {
 	var add_wrapper = document.createElement('div');
 	var add_label = $('<button type="button" class="btn btn-outline-primary2">Add GA</button>');
 	add_wrapper.addEventListener('click', function () {
-		renderModalAdd();
+			let data =new Object;
+			data.type = 'ga';
+			renderModalAdd(data);
 	});
 	var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 	//ga_add_icon = $('<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
@@ -148,8 +155,42 @@ function renderAddOption() {
 	$('#GA_MASTER').append(add_wrapper);
 }
 
+function submitHandler( e){
+	debugger
+	let action = $(e).attr('action')
+	let target = $(e).attr('target')
 
-function renderModalAdd() {
+	let p = $(e).parent().parent().parent().find('input')[0]
+	let n_title = p.value
+	let p_title = $(p).attr('orig_val')
+	let n =  $(p).attr('numb')
+	if (target == 'ga'	){
+		if(action =='save'){
+			updateGA(n,p_title,n_title)
+		}
+		else if (action =='delete'){
+			removeGA(n,p_title)
+		}
+		else if (action =='add'){
+			addGA(n_title)
+		}
+	}
+	else if 
+	(target == 'subga'	){
+		if(action =='save'){
+			updateSubGA(n,p_title,n_title)
+		}
+		else if (action =='delete'){
+			removeSubGA(n,p_title)
+		}
+		else if (action =='add'){
+			addSubGA( n_title)
+		}
+	}
+	
+}
+
+function renderModalAdd(data) {
 
 	$('.modal').remove();
 	var modal = $(`<div class="modal" tabindex="-1" role="dialog">
@@ -160,7 +201,7 @@ function renderModalAdd() {
 			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" >	
 			</div>
 			<div class="modal-footer"> 
-			<button type="button" class="btn btn-primary">Add</button>
+			<button type="button" action="add" target="`+data.type +`" onclick="submitHandler(this)" class="btn btn-primary">Add</button>
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button></div></div></div> </div>`);
 	$(modal).attr('id', 'myModal');
 
@@ -181,11 +222,11 @@ function renderModalEdit(data) {
 		<h5 class="modal_Add">Modify Graduate Attribute</h5>  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span></button></div><div class="modal-body">  
 			<label>Attribute Title:</label>
-			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="` + data.title + `">	
+			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="` + data.title + `"  numb="`+data.number+`" orig_val="`+data.title+`" >	
 			</div>
 			<div class="modal-footer override_ftr" > 
-			<div><button type="button" class="btn btn-outline-danger">Delete</button></div>
-			<div><button type="button" class="btn btn-primary">Save</button>
+			<div><button type="button" action="delete" target=`+data.type+` class="btn btn-outline-danger" onclick="submitHandler(this)">Delete</button></div>
+			<div><button type="button" action="save" target=`+data.type+` class="btn btn-primary" onclick="submitHandler(this)">Save</button>
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button></div></div></div></div> </div>`);
 	$(modal).attr('id', 'myModal');
 
@@ -203,6 +244,7 @@ function updateGA(numb, prev_title , new_title){
 	$.each(temp.GA, function (indexInArray, grad_attr) { 
 		if ( grad_attr.number == numb && grad_attr.title == prev_title){
 			grad_attr.title = new_title;		
+			console.log(temp.GA)
 			return false
 		}	
 	});
@@ -214,15 +256,29 @@ function removeGA(numb, prev_title){
 	$.each(temp.GA, function (indexInArray, grad_attr) { 
 		if (  grad_attr.number == numb && grad_attr.title == prev_title){
 			index = indexInArray
+
 		}	
 	});
 	temp.GA.splice(index ,1);
 	$.each(temp.GA, function (indexInArray, grad_attr) { 
 		grad_attr.number = indexInArray+1;
+
 	});
+	console.log(temp.GA)
+
 }
 
-function addGA(){
+function addGA(new_title){
+	let temp = fakeGetRequest();
+	var new_attr = Object();
+	new_attr.id = "";
+	new_attr.number = temp.GA.length +1;
+	new_attr.title = new_title;
+	new_attr.description = "";
+	new_attr.sub_ga = [{"number":new_attr.number+0.1 , "title" : "new sub ga" }];
+	temp.GA.push(new_attr);
+	console.log(temp.GA)
+
 	
 }
 
@@ -270,17 +326,26 @@ function removeSubGA( numb, prev_title){
 		}
 
    });
-   debugger
+   console.log(temp.GA)
 }
 
 function addSubGA(parent , s_title){
+	let temp = fakeGetRequest();
+	new_sub_ga = new Object();
+	new_sub_ga.title=  s_title;
+
+	$.each(temp.GA, function (indexInArray, ga_attr) { 
+		if (parent == ga_attr.number){
+			new_sub_ga.number = ga_attr.sub_ga.length*0.10 + ga_attr.number +0.1
+			ga_attr.sub_ga.push(new_sub_ga);
+		}
+	});
 
 
 }
 
 
 function toggleVisibility(ref) {
-	console.log('Visibilit clicked');
 	var sub_ga = $(ref).parent().siblings('.sub_ga');
 	$(sub_ga).toggleClass('hidden');
 
