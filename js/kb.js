@@ -1,4 +1,5 @@
 var GLOBAL_ACCESS = 3;
+var GLOBAL_GA = fakeGetRequest();
 window.onload = function () {
 	responseHandler(fakeGetRequest());
 	//createGA();
@@ -240,7 +241,7 @@ function renderModalEdit(data) {
 
 function updateGA(numb, prev_title , new_title){
 
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	$.each(temp.GA, function (indexInArray, grad_attr) { 
 		if ( grad_attr.number == numb && grad_attr.title == prev_title){
 			grad_attr.title = new_title;		
@@ -251,7 +252,7 @@ function updateGA(numb, prev_title , new_title){
 }
 
 function removeGA(numb, prev_title){
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	var index;
 	$.each(temp.GA, function (indexInArray, grad_attr) { 
 		if (  grad_attr.number == numb && grad_attr.title == prev_title){
@@ -269,7 +270,7 @@ function removeGA(numb, prev_title){
 }
 
 function addGA(new_title){
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	var new_attr = Object();
 	new_attr.id = "";
 	new_attr.number = temp.GA.length +1;
@@ -283,7 +284,7 @@ function addGA(new_title){
 }
 
 function updateSubGA( numb, prev_title, new_title){
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	$.each(temp.GA, function (indexInArray, ga_attr) { 
 		debugger
 
@@ -303,7 +304,7 @@ function updateSubGA( numb, prev_title, new_title){
 function removeSubGA( numb, prev_title){
 	var g_index;
 	var sub_index;
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	$.each(temp.GA, function (indexInArray, ga_attr) { 
 		 if (Math.trunc(numb) == ga_attr.number){
 			 $.each(temp.GA[indexInArray].sub_ga, function (s_index, element) { 
@@ -330,7 +331,7 @@ function removeSubGA( numb, prev_title){
 }
 
 function addSubGA(parent , s_title){
-	let temp = fakeGetRequest();
+	let temp = GLOBAL_GA;
 	new_sub_ga = new Object();
 	new_sub_ga.title=  s_title;
 
@@ -353,7 +354,7 @@ function toggleVisibility(ref) {
 }
 
 function editAcces() {
-	let resp = fakeGetRequest();
+	let resp = GLOBAL_GA;
 	return (resp.access >= 3 ? true : false);
 }
 
