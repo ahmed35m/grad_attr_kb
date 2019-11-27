@@ -188,6 +188,14 @@ function submitHandler( e){
 			addSubGA( n_title)
 		}
 	}
+
+	//post to server 
+	$.post("http:maciag.ursse.org/oba/kb.html", GLOBAL_GA,
+		function (data, textStatus, jqXHR) {
+			//window.reload();
+		},
+		"dataType"
+	);
 	
 }
 
