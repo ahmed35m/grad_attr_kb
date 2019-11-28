@@ -1,0 +1,16 @@
+GET http://localhost:3000/attributes
+
+###
+GET http://localhost:3000/subscribers/5ddf22d5924b8015883c0003
+
+###
+POST http://localhost:3000/attributes
+Content-Type: application/json
+
+{
+    "id" : "0",
+    "number": 1,
+    "title": "A Knowledgebase for Enginnering",
+    "description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. "
+
+}
