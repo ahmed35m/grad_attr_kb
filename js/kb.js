@@ -104,7 +104,7 @@ function createGA(numb, title) {
 	if (editAcces()) {
 		d.title = title;
 		d.number = numb;
-		d.type= 'ga';
+		
 		
 		var ga_add_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
 		var ga_edit_icon = document.createElementNS("http://www.w3.org/2000/svg", "textpath");
@@ -113,10 +113,11 @@ function createGA(numb, title) {
 		$(ga_a).append(ga_add_icon);
 		$(ga_e).append(ga_edit_icon);
 		ga_a.addEventListener('click', function () {
+			d.type= 'subga';
 			renderModalAdd(d);
 		});
-
 		ga_e.addEventListener('click', function () {
+			d.type= 'ga';
 			renderModalEdit(d);
 		});
 
@@ -157,7 +158,6 @@ function renderAddOption() {
 }
 
 function submitHandler( e){
-	debugger
 	let action = $(e).attr('action')
 	let target = $(e).attr('target')
 
@@ -185,17 +185,18 @@ function submitHandler( e){
 			removeSubGA(n,p_title)
 		}
 		else if (action =='add'){
-			addSubGA( n_title)
+			addSubGA( Math.trunc(n) ,n_title)
 		}
 	}
 
-	//post to server 
-	$.post("http:maciag.ursse.org/oba/kb.html", GLOBAL_GA,
-		function (data, textStatus, jqXHR) {
-			//window.reload();
-		},
-		"dataType"
-	);
+	// //post to server 
+	// $.post("http:maciag.ursse.org/oba/kb.html", GLOBAL_GA,
+	// 	function (data, textStatus, jqXHR) {
+	// 		console.log('DATA SUBMITTED')
+	// 		//window.reload();
+	// 	},
+	// 	"json"
+	// );
 	
 }
 
@@ -207,7 +208,7 @@ function renderModalAdd(data) {
 		<h5 class="modal_Add">Add a New Graduate Attribute</h5>  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span></button></div><div class="modal-body">  
 			<label>New Attribute:</label>
-			<input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" >	
+			<input type="text" numb="`+data.number +`" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" >	
 			</div>
 			<div class="modal-footer"> 
 			<button type="button" action="add" target="`+data.type +`" onclick="submitHandler(this)" class="btn btn-primary">Add</button>
@@ -294,7 +295,6 @@ function addGA(new_title){
 function updateSubGA( numb, prev_title, new_title){
 	let temp = GLOBAL_GA;
 	$.each(temp.GA, function (indexInArray, ga_attr) { 
-		debugger
 
 		 if (Math.trunc(numb) == ga_attr.number){
 			 $.each(temp.GA[indexInArray].sub_ga, function (index, element) { 
@@ -327,15 +327,11 @@ function removeSubGA( numb, prev_title){
 
 	temp.GA[g_index].sub_ga.splice(sub_index,1)
 
-	$.each(temp.GA, function (indexInArray, ga_attr) { 
-		if (Math.trunc(numb) == ga_attr){
-			$.each(temp.GA[indexInArray].sub_ga, function (s_index, element) { 
-				 	element.number = s_index+1;
-				});
-		}
+	$.each(temp.GA[g_index].sub_ga, function (indexInArray, element) { 
+		element.number =   temp.GA[g_index].number +(indexInArray+1)*.1 ;
+	});
 
-   });
-   console.log(temp.GA)
+//    console.log(temp.GA)
 }
 
 function addSubGA(parent , s_title){
