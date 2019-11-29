@@ -1,16 +1,37 @@
-GET http://localhost:3000/attributes
+GET http://localhost:3000/kb
 
 ###
-GET http://localhost:3000/subscribers/5ddf22d5924b8015883c0003
+
+GET http://localhost:3000/kb/5de08db062516739d4aba464
 
 ###
-POST http://localhost:3000/attributes
+
+POST http://localhost:3000/kb
 Content-Type: application/json
 
 {
-    "id" : "0",
-    "number": 1,
-    "title": "A Knowledgebase for Enginnering",
-    "description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. "
-
+    "number" : 1,
+    "title" : "testing name",
+    "description" : "testing description",
+    "sub_ga" :[{
+        "number" : 1.1,
+        "title" : "sub_ga"  
+    }]
 }
+
+###
+
+DELETE http://localhost:3000/kb/5de08dce1e70363e3ca9ed95
+
+###
+
+PATCH  http://localhost:3000/kb/5de08dce1e70363e3ca9ed95
+Content-Type: application/json
+
+{
+    "title": "New  Title"
+}
+
+###
+
+DELETE http://localhost:3000/kb

@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
-const GASchema = new mongoose.Schema ({
-    
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true},
+const kbSchema = new mongoose.Schema({
     number: {
         type: Number,
         required: true
@@ -17,7 +13,10 @@ const GASchema = new mongoose.Schema ({
         type: String,
         required: true
     },
-},
-)
+    sub_ga: {
+        number: mongoose.Schema.Types.Number,
+        title: mongoose.Schema.Types.ObjectId,
+    }
+})
 
-module.exports = mongoose.model('GA', GASchema)
+module.exports = mongoose.model('Kb', kbSchema)
