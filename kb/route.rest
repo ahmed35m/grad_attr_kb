@@ -2,7 +2,7 @@ GET http://localhost:3000/kb
 
 ###
 
-GET http://localhost:3000/kb/5de08db062516739d4aba464
+GET http://localhost:3000/kb/5de1784c03d18170c4e8c767
 
 ###
 
@@ -10,22 +10,47 @@ POST http://localhost:3000/kb
 Content-Type: application/json
 
 {
-    "number" : 1,
-    "title" : "testing name",
-    "description" : "testing description",
-    "sub_ga" :[{
-        "number" : 1.1,
-        "title" : "sub_ga"  
-    }]
+	"load": {
+		"GA": [{
+			"id": "",
+			"number": 1,
+			"title": "A Knowledgebase for Engineering",
+			"description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. ",
+			"sub_ga": [{
+					"number": 1.1,
+					"title": "Create mathematical expressions to describe physical phenomena (or a physical problem)."
+				},
+				{
+					"number": 1.2,
+					"title": "Select and describe appropriate tools to solve mathematical problems that arise from modeling physical phenomena."
+				},
+
+				{
+					"number": 1.3,
+					"title": "Use solution to mathematical problems to inform the (real-world problem) that gave rise to it."
+				},
+				{
+					"number": 1.4,
+					"title": "Identify fundamental scientific and engineering principles that govern the performance of a given process or system."
+				},
+				{
+					"number": 1.5,
+					"title": "Recall and describe fundamental concepts in natural sciences."
+				}
+			]
+		}]
+	}
+
+
 }
 
 ###
 
-DELETE http://localhost:3000/kb/5de08dce1e70363e3ca9ed95
+DELETE http://localhost:3000/kb/5de1784c03d18170c4e8c767
 
 ###
 
-PATCH  http://localhost:3000/kb/5de08dce1e70363e3ca9ed95
+PATCH  http://localhost:3000/kb/5de1789503d18170c4e8c768
 Content-Type: application/json
 
 {
