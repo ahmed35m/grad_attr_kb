@@ -6,6 +6,11 @@ window.onload = function () {
 
 };
 
+function interfaceDb(res1 , res2){
+	res1.result[] // ga list
+	res2.result[] // sub ga list
+
+}
 
 function loadGA(obj) {
 	$(obj).each(createGA(this));
