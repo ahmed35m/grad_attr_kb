@@ -388,6 +388,15 @@ function editAcces() {
 }
 
 function fakeGetRequest() {
+	$.ajax({
+        type: 'GET',
+        url: 'http://www.mocky.io/v2/5de6b9253700005f000925b8',
+		//headers: { 'Authorization': 'Bearer ' + token },
+		headers: {
+					'Host:' :'www.mocky.io',
+			},
+        success: function(){ alert('GET completed');}});
+
 
 	var resp = {
 		access: GLOBAL_ACCESS, 
@@ -717,7 +726,7 @@ function fakeGetRequest() {
 
 
 
-	return resp;
+	//return resp;
 
 
 
