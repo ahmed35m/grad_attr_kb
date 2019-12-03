@@ -1,14 +1,33 @@
 var GLOBAL_ACCESS = 3;
 var GLOBAL_GA = fakeGetRequest();
 window.onload = function () {
-	responseHandler(fakeGetRequest());
+	//responseHandler(fakeGetRequest());
 	//createGA();
 
 };
 
-function interfaceDB(){
-	
+function interfaceDB( res1 , res2){
+
+	GLOBAL_GA =	  [ {"number": 1 , "tittle:": "Intro"} ,{"number": 2 , "tittle:": "Conclusion"}] ;      //res1.result ;// ga[]
+	var sub_ga = [ {"number": 1.1 , "tittle:": "Background"},{"number": 1.2 , "tittle:": "Lets go"} ,{"number": 2.1 , "tittle:": "Conclusion Summary"}] ;  // res2.result // subga[]
+
+
+	$.each(GLOBAL_GA, function (indexInArray, valueOfElement) { 
+		 var gn = valueOfElement.number;
+
+		 var new_sga = sub_ga.filter(filterByNumb.bind(this, gn) );
+  		 valueOfElement.sub_ga = new_sga;	
+	});
 }
+
+function filterByNumb(n ,item){
+	if ( Math.trunc( item.number) == n )
+	{
+		return true;
+	}
+	return false;
+}
+
 function loadGA(obj) {
 	$(obj).each(createGA(this));
 }
@@ -367,7 +386,8 @@ function editAcces() {
 function fakeGetRequest() {
 
 	var resp = {
-		access: GLOBAL_ACCESS,
+		access: GLOBAL_ACCESS, 
+		
 		"GA": [{
 				"id": "",
 				"number": 1,
