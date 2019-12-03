@@ -6,7 +6,9 @@ window.onload = function () {
 
 };
 
-
+function interfaceDB(){
+	
+}
 function loadGA(obj) {
 	$(obj).each(createGA(this));
 }
