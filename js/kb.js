@@ -35,7 +35,7 @@ $.ajax({
 };
 
 function interfaceDB( res1 , res2){
-
+	//Update these res1 and res2
 	GLOBAL_GA =	  [ {"number": 1 , "title": "Intro"} ,{"number": 2 , "title": "Conclusion"}] ;      //res1.result ;// ga[]
 	var sub_ga = [ {"number": 1.1 , "title": "Background"},{"number": 1.2 , "title": "Lets go"} ,{"number": 2.1 , "title": "Conclusion Summary"}] ;  // res2.result // subga[]
 
@@ -69,10 +69,10 @@ function responseHandler(resp) {
 					</div>`);
 		$('#GA_MASTER').append(err);
 	}
-
+	resp.GA = GLOBAL_GA;
 	$.each(resp.GA, function (indexInArray, valueOfElement) {
 		// consoleconsole.log(resp.GA[indexInArray].title);
-		debugger
+		//debugger
 		// createGA(resp.GA[indexInArray].number, resp.GA[indexInArray].title);
 		//console.log(valueOfElement.title);
 		createGA(valueOfElement.number, valueOfElement.title);
@@ -134,7 +134,7 @@ function createSubGA(data) {
 };
 
 function createGA(numb, title) {
-	debugger
+	// debugger
 	var wrapper = document.createElement('div');
 	wrapper.id = "ga1";
 	$(wrapper).addClass('ga');
