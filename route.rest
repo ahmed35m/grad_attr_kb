@@ -1,0 +1,29 @@
+###
+GET http://maciag.ursse.org/api/forms/grad_attributes
+
+###
+GET http://maciag.ursse.org/api/forms/indicators
+{
+
+}
+
+###
+
+GET http://maciag.ursse.org/api/users/login
+
+{ 
+   "user":{ 
+      "email":"whatacoolemail@uregina.ca",
+      "password":"69"
+   }
+}
+
+
+###
+
+
+ $.ajax({
+        type: 'GET',
+        url: baseUrl + '/classes/all',
+        headers: { 'Authorization': 'Bearer ' + token },
+        success: ({ result }) => {
