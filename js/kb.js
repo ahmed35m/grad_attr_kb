@@ -28,6 +28,7 @@ $.ajax({
 		console.log(response);
 		alert('Second Get worked');
 		interfaceDB( GLOBAL_GA , response.result);
+		responseHandler(GLOBAL_GA);
 	}
 });
 
@@ -64,7 +65,7 @@ function loadGA(obj) {
 function responseHandler(resp) {
 
 	if (resp == null) {
-		var err = $(`<div class="card">	<div class="card-body">	Something Went Wrong :/
+		var err = $(`<div class="card">	<div class="card-body">	Something Went Wrong :/ ... (ERR: NO DATA RECEIVED)
 					</div>`);
 		$('#GA_MASTER').append(err);
 	}

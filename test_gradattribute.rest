@@ -1,0 +1,33 @@
+GET http://www.mocky.io/v2/5de6b909370000a21d0925b7
+
+####
+{ "GA":[
+    {
+        "id": "",
+        "number": 1,
+        "title": "A Knowledgebase for Engineering"
+    },
+    {
+            "id": "",
+            "number": 2,
+            "title": "Problem Analysis"
+    },
+    {
+        "id": "",
+        "number": 3,
+        "title": "Investigation"
+    },
+
+    {
+        "id": "",
+        "number": 4,
+        "title": "Design"
+    },
+    {
+        "id": "",
+        "number": 5,
+        "title": "Use of Engineering Tools"
+    }
+
+
+]}
