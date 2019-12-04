@@ -1,18 +1,18 @@
 var GLOBAL_ACCESS = 3;
 var GLOBAL_GA = fakeGetRequest();
 window.onload = function () {
-	responseHandler(fakeGetRequest());
+	responseHandler(fakeGetRequest()); // When the page is loaded call responseHandler
 	//createGA();
 
 };
 
-
+//loadGA, This function is responsible To load existing graduate attributes from the Data base
 function loadGA(obj) {
 	$(obj).each(createGA(this));
 }
 
 
-
+//response Handler, This function will check the data base for graduate attributes and will populate the page with the data collected from the data base. if the data base is empty a warning message will appear
 function responseHandler(resp) {
 
 	if (resp == null) {
@@ -36,7 +36,7 @@ function responseHandler(resp) {
 
 }
 
-
+//createSubGa, This function is responsible for creating the sub graduate attributes after the createGA function is called. It will also add new sub graduate attributes
 function createSubGA(data) {
 
 	var wrapper = document.createElement('div');
@@ -83,6 +83,7 @@ function createSubGA(data) {
 
 };
 
+//createGA, This fucntion is responsible for creating the main graduate attributes and load their  user interface on the web page. it
 function createGA(numb, title) {
 
 	var wrapper = document.createElement('div');
