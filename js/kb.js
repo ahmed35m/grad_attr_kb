@@ -1,8 +1,35 @@
+var token = localStorage.getItem('oba-token');
 var GLOBAL_ACCESS = 3;
 var GLOBAL_GA = fakeGetRequest();
+var baseUrl ="https://maciag.ursse.org/api";
 window.onload = function () {
 	//responseHandler(fakeGetRequest());
 	//createGA();
+
+$.ajax({
+	type: "GET",
+	url: baseUrl +"/forms/grad_attributes",
+	headers: { 'Authorization': 'Bearer ' + token },
+	success: function (response) {
+		console.log('GA ');
+		console.log(response);
+		alert('First Get worked');
+		GLOBAL_GA = response.result;		
+	}
+});
+
+$.ajax({
+	type: "GET",
+	url:  baseUrl+"/forms/indicators",
+	headers: { 'Authorization': 'Bearer ' + token },
+	dataType: "JSON",
+	success: function (response) {
+		console.log('SUB_GA ');
+		console.log(response);
+		alert('Second Get worked');
+		interfaceDB( GLOBAL_GA , response.result);
+	}
+});
 
 };
 
@@ -26,13 +53,6 @@ function filterByNumb(n ,item){
 		return true;
 	}
 	return false;
-}
-
-function interfaceApp(){
-	// Get All GAs 
-	// For each GA - get indicators
-	//Push indicator to A GA
-
 }
 
 function loadGA(obj) {
@@ -76,7 +96,6 @@ function createSubGA(data) {
 	wrapper.id = "sub_ga_"+data.number;
 	$(wrapper).addClass('visible');
 
-
 	var ga_instance = document.createElement('div');
 	var ga_n = document.createElement('label');
 	var ga_title = document.createElement('label');
@@ -99,8 +118,6 @@ function createSubGA(data) {
 	$(ga_instance).attr('id', data.number).attr('name', 'grad_attr').addClass(' grad_attr');
 	$(ga_n).text(data.number).addClass('sub_n');
 	$(ga_title).text(data.title).addClass('sub_title');
-
-
 
 	$(ga_label).addClass('sub_ga_label').append(ga_n).append(ga_title);
 
@@ -220,15 +237,6 @@ function submitHandler( e){
 			addSubGA( Math.trunc(n) ,n_title)
 		}
 	}
-
-	// //post to server 
-	// $.post("http:maciag.ursse.org/oba/kb.html", GLOBAL_GA,
-	// 	function (data, textStatus, jqXHR) {
-	// 		console.log('DATA SUBMITTED')
-	// 		//window.reload();
-	// 	},
-	// 	"json"
-	// );
 	
 }
 
@@ -290,6 +298,23 @@ function updateGA(numb, prev_title , new_title){
 			return false
 		}	
 	});
+
+	///PUT TO SERVER
+	$.ajax({
+		type: "PUT",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":numb ,"title": new_title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function removeGA(numb, prev_title){
@@ -306,8 +331,23 @@ function removeGA(numb, prev_title){
 		grad_attr.number = indexInArray+1;
 
 	});
-	console.log(temp.GA)
+	// console.log(temp.GA)
 
+	///DELETE Request TO SERVER
+	$.ajax({
+		type: "DELETE",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":numb ,"title": prev_title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Removed '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
 }
 
 function addGA(new_title){
@@ -321,7 +361,22 @@ function addGA(new_title){
 	temp.GA.push(new_attr);
 	console.log(temp.GA)
 
-	
+	///POST TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":new_attr.number ,"title": new_attr.title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Added '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function updateSubGA( numb, prev_title, new_title){
@@ -338,6 +393,23 @@ function updateSubGA( numb, prev_title, new_title){
 			 });
 		 }
 	});
+
+	///PUT TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': { "number": numb , "title":"new_title" }},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 	
 }
 
@@ -363,7 +435,22 @@ function removeSubGA( numb, prev_title){
 		element.number =   temp.GA[g_index].number +(indexInArray+1)*.1 ;
 	});
 
-//    console.log(temp.GA)
+	///DELETE Request TO SERVER
+	$.ajax({
+		type: "DELETE",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': { "number" : numb , "title": prev_title  }},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Deleted '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function addSubGA(parent , s_title){
@@ -375,6 +462,22 @@ function addSubGA(parent , s_title){
 		if (parent == ga_attr.number){
 			new_sub_ga.number = ga_attr.sub_ga.length*0.10 + ga_attr.number +0.1
 			ga_attr.sub_ga.push(new_sub_ga);
+		}
+	});
+
+	///POST TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': new_sub_ga},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
 		}
 	});
 
@@ -395,7 +498,7 @@ function editAcces() {
 }
 
 function fakeGetRequest() {
-	$.ajax({
+	/*$.ajax({
         type: 'GET',
         url: 'http://www.mocky.io/v2/5de6b9253700005f000925b8',
 		//headers: { 'Authorization': 'Bearer ' + token },
@@ -404,7 +507,7 @@ function fakeGetRequest() {
 			},
         success: function(){ alert('GET completed');}});
 
-
+*/
 	var resp = {
 		access: GLOBAL_ACCESS, 
 		GA : GLOBAL_GA
@@ -733,7 +836,7 @@ function fakeGetRequest() {
 
 
 
-	//return resp;
+	return resp;
 
 
 
