@@ -7,6 +7,13 @@ window.onload = function () {
 };
 
 
+function interfaceApp(){
+	// Get All GAs 
+	// For each GA - get indicators
+	//Push indicator to A GA
+
+}
+
 function loadGA(obj) {
 	$(obj).each(createGA(this));
 }
@@ -41,7 +48,7 @@ function createSubGA(data) {
 
 	var wrapper = document.createElement('div');
 	wrapper.title = "Sub Graduate Attribute";
-	wrapper.id = "sub_ga_1.1";
+	wrapper.id = "sub_ga_"+data.number;
 	$(wrapper).addClass('visible');
 
 
@@ -76,7 +83,7 @@ function createSubGA(data) {
 	$(wrapper).append(ga_instance);
 
 	var src_id = Math.trunc(data.number);
-	var source = $('#' + src_id); //$('#').siblings();
+	var source = $('#' + src_id); 
 	var tar = $(source).siblings('.sub_ga');
 	$(tar).append(wrapper);
 
