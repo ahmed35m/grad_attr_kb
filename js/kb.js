@@ -1,6 +1,6 @@
 var token = localStorage.getItem('oba-token');
 var GLOBAL_ACCESS = 3;
-var GLOBAL_GA = fakeGetRequest();
+var GLOBAL_GA ;//= fakeGetRequest();
 var baseUrl ="https://maciag.ursse.org/api";
 window.onload = function () {
 	//responseHandler(fakeGetRequest());
