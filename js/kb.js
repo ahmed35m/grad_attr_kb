@@ -1,15 +1,59 @@
+var token = localStorage.getItem('oba-token');
 var GLOBAL_ACCESS = 3;
-var GLOBAL_GA = fakeGetRequest();
+var GLOBAL_GA ;//= fakeGetRequest();
+var baseUrl ="https://maciag.ursse.org/api";
 window.onload = function () {
-	responseHandler(fakeGetRequest());
+	//responseHandler(fakeGetRequest());
 	//createGA();
+
+$.ajax({
+	type: "GET",
+	url: baseUrl +"/forms/grad_attributes",
+	headers: { 'Authorization': 'Bearer ' + token },
+	success: function (response) {
+		console.log('GA ');
+		console.log(response);
+		alert('First Get worked');
+		GLOBAL_GA = response.result;		
+	}
+});
+
+$.ajax({
+	type: "GET",
+	url:  baseUrl+"/forms/indicators",
+	headers: { 'Authorization': 'Bearer ' + token },
+	dataType: "JSON",
+	success: function (response) {
+		console.log('SUB_GA ');
+		console.log(response);
+		alert('Second Get worked');
+		interfaceDB( GLOBAL_GA , response.result);
+		responseHandler(GLOBAL_GA);
+	}
+});
 
 };
 
-function interfaceDb(res1 , res2){
-	res1.result[] // ga list
-	res2.result[] // sub ga list
+function interfaceDB( res1 , res2){
+	//Update these res1 and res2
+	GLOBAL_GA =	  [ {"number": 1 , "title": "Intro"} ,{"number": 2 , "title": "Conclusion"}] ;      //res1.result ;// ga[]
+	var sub_ga = [ {"number": 1.1 , "title": "Background"},{"number": 1.2 , "title": "Lets go"} ,{"number": 2.1 , "title": "Conclusion Summary"}] ;  // res2.result // subga[]
 
+
+	$.each(GLOBAL_GA, function (indexInArray, valueOfElement) { 
+		 var gn = valueOfElement.number;
+
+		 var new_sga = sub_ga.filter(filterByNumb.bind(this, gn) );
+  		 valueOfElement.sub_ga = new_sga;	
+	});
+}
+
+function filterByNumb(n ,item){
+	if ( Math.trunc( item.number) == n )
+	{
+		return true;
+	}
+	return false;
 }
 
 function loadGA(obj) {
@@ -21,14 +65,18 @@ function loadGA(obj) {
 function responseHandler(resp) {
 
 	if (resp == null) {
-		var err = $(`<div class="card">	<div class="card-body">	Something Went Wrong :/
+		var err = $(`<div class="card">	<div class="card-body">	Something Went Wrong :/ ... (ERR: NO DATA RECEIVED)
 					</div>`);
 		$('#GA_MASTER').append(err);
 	}
-
+	resp.GA = GLOBAL_GA;
 	$.each(resp.GA, function (indexInArray, valueOfElement) {
 		// consoleconsole.log(resp.GA[indexInArray].title);
-		createGA(resp.GA[indexInArray].number, resp.GA[indexInArray].title);
+		//debugger
+		// createGA(resp.GA[indexInArray].number, resp.GA[indexInArray].title);
+		//console.log(valueOfElement.title);
+		createGA(valueOfElement.number, valueOfElement.title);
+
 		$.each(resp.GA[indexInArray].sub_ga, function (indexInSubArray, el) {
 			createSubGA(resp.GA[indexInArray].sub_ga[indexInSubArray]);
 		});
@@ -46,9 +94,8 @@ function createSubGA(data) {
 
 	var wrapper = document.createElement('div');
 	wrapper.title = "Sub Graduate Attribute";
-	wrapper.id = "sub_ga_1.1";
+	wrapper.id = "sub_ga_"+data.number;
 	$(wrapper).addClass('visible');
-
 
 	var ga_instance = document.createElement('div');
 	var ga_n = document.createElement('label');
@@ -73,15 +120,13 @@ function createSubGA(data) {
 	$(ga_n).text(data.number).addClass('sub_n');
 	$(ga_title).text(data.title).addClass('sub_title');
 
-
-
 	$(ga_label).addClass('sub_ga_label').append(ga_n).append(ga_title);
 
 	$(ga_instance).append(ga_label).append(ga_edit);
 	$(wrapper).append(ga_instance);
 
 	var src_id = Math.trunc(data.number);
-	var source = $('#' + src_id); //$('#').siblings();
+	var source = $('#' + src_id); 
 	var tar = $(source).siblings('.sub_ga');
 	$(tar).append(wrapper);
 
@@ -89,7 +134,7 @@ function createSubGA(data) {
 };
 
 function createGA(numb, title) {
-
+	// debugger
 	var wrapper = document.createElement('div');
 	wrapper.id = "ga1";
 	$(wrapper).addClass('ga');
@@ -193,15 +238,6 @@ function submitHandler( e){
 			addSubGA( Math.trunc(n) ,n_title)
 		}
 	}
-
-	// //post to server 
-	// $.post("http:maciag.ursse.org/oba/kb.html", GLOBAL_GA,
-	// 	function (data, textStatus, jqXHR) {
-	// 		console.log('DATA SUBMITTED')
-	// 		//window.reload();
-	// 	},
-	// 	"json"
-	// );
 	
 }
 
@@ -263,6 +299,23 @@ function updateGA(numb, prev_title , new_title){
 			return false
 		}	
 	});
+
+	///PUT TO SERVER
+	$.ajax({
+		type: "PUT",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":numb ,"title": new_title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function removeGA(numb, prev_title){
@@ -279,8 +332,23 @@ function removeGA(numb, prev_title){
 		grad_attr.number = indexInArray+1;
 
 	});
-	console.log(temp.GA)
+	// console.log(temp.GA)
 
+	///DELETE Request TO SERVER
+	$.ajax({
+		type: "DELETE",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":numb ,"title": prev_title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Removed '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
 }
 
 function addGA(new_title){
@@ -294,7 +362,22 @@ function addGA(new_title){
 	temp.GA.push(new_attr);
 	console.log(temp.GA)
 
-	
+	///POST TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/grad_attribute",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'graduate_attribute': {"number":new_attr.number ,"title": new_attr.title}},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Attribute Added '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function updateSubGA( numb, prev_title, new_title){
@@ -311,6 +394,23 @@ function updateSubGA( numb, prev_title, new_title){
 			 });
 		 }
 	});
+
+	///PUT TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': { "number": numb , "title":"new_title" }},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 	
 }
 
@@ -336,7 +436,22 @@ function removeSubGA( numb, prev_title){
 		element.number =   temp.GA[g_index].number +(indexInArray+1)*.1 ;
 	});
 
-//    console.log(temp.GA)
+	///DELETE Request TO SERVER
+	$.ajax({
+		type: "DELETE",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': { "number" : numb , "title": prev_title  }},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Deleted '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
+		}
+	});
+
 }
 
 function addSubGA(parent , s_title){
@@ -348,6 +463,22 @@ function addSubGA(parent , s_title){
 		if (parent == ga_attr.number){
 			new_sub_ga.number = ga_attr.sub_ga.length*0.10 + ga_attr.number +0.1
 			ga_attr.sub_ga.push(new_sub_ga);
+		}
+	});
+
+	///POST TO SERVER
+	$.ajax({
+		type: "POST",
+		url: baseUrl+"/forms/indicators",
+		headers: { 'Authorization': 'Bearer ' + token },
+		data: { 'indicator': new_sub_ga},
+		dataType: "JSON",
+		success: function (response) {
+			alert('Indicator Updated '+ response.title);
+			//window reload			
+		},
+		error : function(response){
+			alert("Something went wrong :/" +response.errors);
 		}
 	});
 
@@ -368,330 +499,340 @@ function editAcces() {
 }
 
 function fakeGetRequest() {
+	/*$.ajax({
+        type: 'GET',
+        url: 'http://www.mocky.io/v2/5de6b9253700005f000925b8',
+		//headers: { 'Authorization': 'Bearer ' + token },
+		headers: {
+					'Host:' :'www.mocky.io',
+			},
+        success: function(){ alert('GET completed');}});
 
+*/
 	var resp = {
-		access: GLOBAL_ACCESS,
-		"GA": [{
-				"id": "",
-				"number": 1,
-				"title": "A Knowledgebase for Engineering",
-				"description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. ",
-				"sub_ga": [{
-						"number": 1.1,
-						"title": "Create mathematical expressions to describe physical phenomena (or a physical problem)."
-					},
-					{
-						"number": 1.2,
-						"title": "Select and describe appropriate tools to solve mathematical problems that arise from modeling physical phenomena."
-					},
+		access: GLOBAL_ACCESS, 
+		GA : GLOBAL_GA
+		// "GA": [{
+		// 		"id": "",
+		// 		"number": 1,
+		// 		"title": "A Knowledgebase for Engineering",
+		// 		"description": "A Knowledgebase for EngineeringDemonstrated competence in university level mathematics, natural sciences, engineering fundamentals, and specialized engineering knowledge appropriate to the program. ",
+		// 		"sub_ga": [{
+		// 				"number": 1.1,
+		// 				"title": "Create mathematical expressions to describe physical phenomena (or a physical problem)."
+		// 			},
+		// 			{
+		// 				"number": 1.2,
+		// 				"title": "Select and describe appropriate tools to solve mathematical problems that arise from modeling physical phenomena."
+		// 			},
 
-					{
-						"number": 1.3,
-						"title": "Use solution to mathematical problems to inform the (real-world problem) that gave rise to it."
-					},
-					{
-						"number": 1.4,
-						"title": "Identify fundamental scientific and engineering principles that govern the performance of a given process or system."
-					},
-					{
-						"number": 1.5,
-						"title": "Recall and describe fundamental concepts in natural sciences."
-					}
+		// 			{
+		// 				"number": 1.3,
+		// 				"title": "Use solution to mathematical problems to inform the (real-world problem) that gave rise to it."
+		// 			},
+		// 			{
+		// 				"number": 1.4,
+		// 				"title": "Identify fundamental scientific and engineering principles that govern the performance of a given process or system."
+		// 			},
+		// 			{
+		// 				"number": 1.5,
+		// 				"title": "Recall and describe fundamental concepts in natural sciences."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 2,
-				"title": "Problem Analysis",
-				"description": "An ability to use appropriate knowledge and skills to identify, formulate, analyze, and solve complex engineering problems in order to reach substantiated conclusions.",
-				"sub_ga": [{
-						"number": 2.1,
-						"title": "Create processes for solving problems including justified approximations and assumptions.."
-					},
-					{
-						"number": 2.2,
-						"title": "Evaluate validity of results and model for error/uncertainty."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 2,
+		// 		"title": "Problem Analysis",
+		// 		"description": "An ability to use appropriate knowledge and skills to identify, formulate, analyze, and solve complex engineering problems in order to reach substantiated conclusions.",
+		// 		"sub_ga": [{
+		// 				"number": 2.1,
+		// 				"title": "Create processes for solving problems including justified approximations and assumptions.."
+		// 			},
+		// 			{
+		// 				"number": 2.2,
+		// 				"title": "Evaluate validity of results and model for error/uncertainty."
+		// 			},
 
-					{
-						"number": 2.3,
-						"title": "Reframe complex problems into interconnected sub-problems, using a systems approach."
-					},
-					{
-						"number": 2.4,
-						"title": "Identify known and unknown information, uncertainties, and biases in complex ill-structured problems"
-					}
+		// 			{
+		// 				"number": 2.3,
+		// 				"title": "Reframe complex problems into interconnected sub-problems, using a systems approach."
+		// 			},
+		// 			{
+		// 				"number": 2.4,
+		// 				"title": "Identify known and unknown information, uncertainties, and biases in complex ill-structured problems"
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 3,
-				"title": "Investigation",
-				"description": "An ability to conduct investigations of complex problems by methods that include appropriate experiments, analysis and interpretation of data, and synthesis of information in order to reach valid conclusions",
-				"sub_ga": [{
-						"number": 3.1,
-						"title": "Generate working hypotheses and assumptions for engineering problems."
-					},
-					{
-						"number": 3.2,
-						"title": "Develop investigations involving information and data gathering, analysis, and/or experimentation."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 3,
+		// 		"title": "Investigation",
+		// 		"description": "An ability to conduct investigations of complex problems by methods that include appropriate experiments, analysis and interpretation of data, and synthesis of information in order to reach valid conclusions",
+		// 		"sub_ga": [{
+		// 				"number": 3.1,
+		// 				"title": "Generate working hypotheses and assumptions for engineering problems."
+		// 			},
+		// 			{
+		// 				"number": 3.2,
+		// 				"title": "Develop investigations involving information and data gathering, analysis, and/or experimentation."
+		// 			},
 
-					{
-						"number": 3.3,
-						"title": "Analyze and interpret data and information to reach a conclusion using a systems approach."
-					},
-					{
-						"number": 3.4,
-						"title": "Identify limitations of the tests and methods used and their impact on the results."
-					}
+		// 			{
+		// 				"number": 3.3,
+		// 				"title": "Analyze and interpret data and information to reach a conclusion using a systems approach."
+		// 			},
+		// 			{
+		// 				"number": 3.4,
+		// 				"title": "Identify limitations of the tests and methods used and their impact on the results."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 4,
-				"title": "Design",
-				"description": "An ability to design solutions for complex, open-ended engineering problems and to design systems, components or processes that meet specified needs with appropriate attention to health and safety risks, applicable standards, and economic, environmental, cultural and societal considerations.",
-				"sub_ga": [{
-						"number": 4.1,
-						"title": "Follow a general procedure to design a system, component, or process for a complex open-ended problem."
-					},
-					{
-						"number": 4.2,
-						"title": "Identify client and user needs."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 4,
+		// 		"title": "Design",
+		// 		"description": "An ability to design solutions for complex, open-ended engineering problems and to design systems, components or processes that meet specified needs with appropriate attention to health and safety risks, applicable standards, and economic, environmental, cultural and societal considerations.",
+		// 		"sub_ga": [{
+		// 				"number": 4.1,
+		// 				"title": "Follow a general procedure to design a system, component, or process for a complex open-ended problem."
+		// 			},
+		// 			{
+		// 				"number": 4.2,
+		// 				"title": "Identify client and user needs."
+		// 			},
 
-					{
-						"number": 4.3,
-						"title": "Evaluate the design options against project criteria using a systems approach."
-					},
-					{
-						"number": 4.4,
-						"title": "Assess design based on requirements, yield, reliability, safety, and impact on environment and society."
-					},
-					{
-						"number": 4.5,
-						"title": "Create and test simulations, models, and/or prototypes of the design."
-					},
-					{
-						"number": 4.6,
-						"title": "Incorporate client/user feedback into the design."
-					}
+		// 			{
+		// 				"number": 4.3,
+		// 				"title": "Evaluate the design options against project criteria using a systems approach."
+		// 			},
+		// 			{
+		// 				"number": 4.4,
+		// 				"title": "Assess design based on requirements, yield, reliability, safety, and impact on environment and society."
+		// 			},
+		// 			{
+		// 				"number": 4.5,
+		// 				"title": "Create and test simulations, models, and/or prototypes of the design."
+		// 			},
+		// 			{
+		// 				"number": 4.6,
+		// 				"title": "Incorporate client/user feedback into the design."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 5,
-				"title": "Use of Engineering Tools",
-				"description": "An ability to create, select, apply, adapt, and extend appropriate techniques, resources, and modern engineering tools to a range of engineering activities, from simple to complex, with an understanding of the associated limitations. ",
-				"sub_ga": [{
-						"number": 5.1,
-						"title": "Select appropriate measurement devices or techniques to accomplish a task."
-					},
-					{
-						"number": 5.2,
-						"title": "Demonstrate correct usage of testing apparatus, databases, models, and/or standards."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 5,
+		// 		"title": "Use of Engineering Tools",
+		// 		"description": "An ability to create, select, apply, adapt, and extend appropriate techniques, resources, and modern engineering tools to a range of engineering activities, from simple to complex, with an understanding of the associated limitations. ",
+		// 		"sub_ga": [{
+		// 				"number": 5.1,
+		// 				"title": "Select appropriate measurement devices or techniques to accomplish a task."
+		// 			},
+		// 			{
+		// 				"number": 5.2,
+		// 				"title": "Demonstrate correct usage of testing apparatus, databases, models, and/or standards."
+		// 			},
 
-					{
-						"number": 5.3,
-						"title": "Analyze the limitations, uncertainties, and sources of error inherent in engineering tools."
-					},
-					{
-						"number": 5.4,
-						"title": "Evaluate appropriateness of results from instrumentation, measurements techniques, models and simulations"
-					}
+		// 			{
+		// 				"number": 5.3,
+		// 				"title": "Analyze the limitations, uncertainties, and sources of error inherent in engineering tools."
+		// 			},
+		// 			{
+		// 				"number": 5.4,
+		// 				"title": "Evaluate appropriateness of results from instrumentation, measurements techniques, models and simulations"
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 6,
-				"title": "Individual and Team Work",
-				"description": "An ability to work effectively as a member and leader in teams, preferably in a multi-disciplinary setting.",
-				"sub_ga": [{
-						"number": 6.1,
-						"title": "Assume personal responsibility for one's own work and collective accountability for the team work."
-					},
-					{
-						"number": 6.2,
-						"title": "Apply principles of conflict management and personal accountability."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 6,
+		// 		"title": "Individual and Team Work",
+		// 		"description": "An ability to work effectively as a member and leader in teams, preferably in a multi-disciplinary setting.",
+		// 		"sub_ga": [{
+		// 				"number": 6.1,
+		// 				"title": "Assume personal responsibility for one's own work and collective accountability for the team work."
+		// 			},
+		// 			{
+		// 				"number": 6.2,
+		// 				"title": "Apply principles of conflict management and personal accountability."
+		// 			},
 
-					{
-						"number": 6.3,
-						"title": "Evaluate team effectiveness and plans for improvement."
-					},
-					{
-						"number": 6.4,
-						"title": "Report results as a team, with contributions from all individual efforts."
-					}
+		// 			{
+		// 				"number": 6.3,
+		// 				"title": "Evaluate team effectiveness and plans for improvement."
+		// 			},
+		// 			{
+		// 				"number": 6.4,
+		// 				"title": "Report results as a team, with contributions from all individual efforts."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 7,
-				"title": "Communication Skills",
-				"description": "An ability to communicate complex engineering concepts within the profession and with society at large. Such ability includes reading, writing, speaking and listening, and the ability to comprehend and write effective reports and design documentation, and to give and effectively respond to clear instructions.",
-				"sub_ga": [{
-						"number": 7.1,
-						"title": "Write technical documentation using standard formats, grammar, and mechanics."
-					},
-					{
-						"number": 7.2,
-						"title": "Utilize proper referencing and citations in written works."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 7,
+		// 		"title": "Communication Skills",
+		// 		"description": "An ability to communicate complex engineering concepts within the profession and with society at large. Such ability includes reading, writing, speaking and listening, and the ability to comprehend and write effective reports and design documentation, and to give and effectively respond to clear instructions.",
+		// 		"sub_ga": [{
+		// 				"number": 7.1,
+		// 				"title": "Write technical documentation using standard formats, grammar, and mechanics."
+		// 			},
+		// 			{
+		// 				"number": 7.2,
+		// 				"title": "Utilize proper referencing and citations in written works."
+		// 			},
 
-					{
-						"number": 7.3,
-						"title": "Deliver clear and organized formal presentations."
-					},
-					{
-						"number": 7.4,
-						"title": "Create figures, tables and graphics to engineering report standards."
-					},
-					{
-						"number": 7.5,
-						"title": "Uses a suitable format for a technical report."
-					}
+		// 			{
+		// 				"number": 7.3,
+		// 				"title": "Deliver clear and organized formal presentations."
+		// 			},
+		// 			{
+		// 				"number": 7.4,
+		// 				"title": "Create figures, tables and graphics to engineering report standards."
+		// 			},
+		// 			{
+		// 				"number": 7.5,
+		// 				"title": "Uses a suitable format for a technical report."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 8,
-				"title": "Professionalism",
-				"description": "An understanding of the roles and responsibilities of the professional engineer in society, especially the primary role of protection of the public and the public interest.",
-				"sub_ga": [{
-						"number": 8.1,
-						"title": "Recognize protection of the public and public interest in decision making and recommendations."
-					},
-					{
-						"number": 8.2,
-						"title": "Identify relevant engineering professional and technical organizations."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 8,
+		// 		"title": "Professionalism",
+		// 		"description": "An understanding of the roles and responsibilities of the professional engineer in society, especially the primary role of protection of the public and the public interest.",
+		// 		"sub_ga": [{
+		// 				"number": 8.1,
+		// 				"title": "Recognize protection of the public and public interest in decision making and recommendations."
+		// 			},
+		// 			{
+		// 				"number": 8.2,
+		// 				"title": "Identify relevant engineering professional and technical organizations."
+		// 			},
 
-					{
-						"number": 8.3,
-						"title": "Demonstrate awareness of engineering as a regulated profession, including reference to relevant engineering regulations/codes/standards."
-					},
-					{
-						"number": 8.4,
-						"title": "Demonstrates accountability through performance (meets deadlines, submits quality work, adheres to requirements, etc.)."
-					}
+		// 			{
+		// 				"number": 8.3,
+		// 				"title": "Demonstrate awareness of engineering as a regulated profession, including reference to relevant engineering regulations/codes/standards."
+		// 			},
+		// 			{
+		// 				"number": 8.4,
+		// 				"title": "Demonstrates accountability through performance (meets deadlines, submits quality work, adheres to requirements, etc.)."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 9,
-				"title": "Impact of Engineering on Society & the Environment",
-				"description": "An ability to analyze social and environmental aspects of engineering activities. Such ability includes an understanding of the interactions that engineering has with the economic, social, health, safety, legal, and cultural aspects of society, the uncertainties in the prediction of such interactions; and the concepts of sustainable design and development and environmental stewardship.",
-				"sub_ga": [{
-						"number": 9.1,
-						"title": "Compare technological alternatives and identify means to mitigate social, environmental, human health and safety impacts."
-					},
-					{
-						"number": 9.2,
-						"title": "Balance economic, cultural, societal and technical considerations."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 9,
+		// 		"title": "Impact of Engineering on Society & the Environment",
+		// 		"description": "An ability to analyze social and environmental aspects of engineering activities. Such ability includes an understanding of the interactions that engineering has with the economic, social, health, safety, legal, and cultural aspects of society, the uncertainties in the prediction of such interactions; and the concepts of sustainable design and development and environmental stewardship.",
+		// 		"sub_ga": [{
+		// 				"number": 9.1,
+		// 				"title": "Compare technological alternatives and identify means to mitigate social, environmental, human health and safety impacts."
+		// 			},
+		// 			{
+		// 				"number": 9.2,
+		// 				"title": "Balance economic, cultural, societal and technical considerations."
+		// 			},
 
-					{
-						"number": 9.3,
-						"title": "Apply principles of preventive engineering, life cycle analysis, and sustainable development."
-					}
+		// 			{
+		// 				"number": 9.3,
+		// 				"title": "Apply principles of preventive engineering, life cycle analysis, and sustainable development."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 10,
-				"title": "Ethics and Equitys",
-				"description": "An ability to apply professional ethics, accountability, and equity.",
-				"sub_ga": [{
-						"number": 10.1,
-						"title": "Adhere to the principles of academic and professional integrity."
-					},
-					{
-						"number": 10.2,
-						"title": "Describe ethical and equity issues and how they affect the individual, organization and the public."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 10,
+		// 		"title": "Ethics and Equitys",
+		// 		"description": "An ability to apply professional ethics, accountability, and equity.",
+		// 		"sub_ga": [{
+		// 				"number": 10.1,
+		// 				"title": "Adhere to the principles of academic and professional integrity."
+		// 			},
+		// 			{
+		// 				"number": 10.2,
+		// 				"title": "Describe ethical and equity issues and how they affect the individual, organization and the public."
+		// 			},
 
-					{
-						"number": 10.3,
-						"title": "Understand consequences of deviating from professional and organizational codes of conduct."
-					},
-					{
-						"number": 10.4,
-						"title": "Comprehend and demonstrate sensitivity to cultural and gender issues."
-					}
+		// 			{
+		// 				"number": 10.3,
+		// 				"title": "Understand consequences of deviating from professional and organizational codes of conduct."
+		// 			},
+		// 			{
+		// 				"number": 10.4,
+		// 				"title": "Comprehend and demonstrate sensitivity to cultural and gender issues."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 11,
-				"title": "Economics and Project Management",
-				"description": "An ability to appropriately incorporate economics and business practices including project, risk and change management into the practice of engineering and to understand their limitations.",
-				"sub_ga": [{
-						"number": 11.1,
-						"title": "Define the project scope, tasks, milestones, and/or required resources."
-					},
-					{
-						"number": 11.2,
-						"title": "Determine whether the project is economically viable and attractive."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 11,
+		// 		"title": "Economics and Project Management",
+		// 		"description": "An ability to appropriately incorporate economics and business practices including project, risk and change management into the practice of engineering and to understand their limitations.",
+		// 		"sub_ga": [{
+		// 				"number": 11.1,
+		// 				"title": "Define the project scope, tasks, milestones, and/or required resources."
+		// 			},
+		// 			{
+		// 				"number": 11.2,
+		// 				"title": "Determine whether the project is economically viable and attractive."
+		// 			},
 
-					{
-						"number": 11.3,
-						"title": "Comprehend, evaluate, and manage risk."
-					},
-					{
-						"number": 11.4,
-						"title": "Plan and schedule a project to bring it in on time and resources."
-					},
-					{
-						"number": 11.5,
-						"title": "Outline a quality assurance plan for project management."
-					},
-					{
-						"number": 11.6,
-						"title": "Recognize the various types of benefits, costs, and risks in a projects life cycle."
-					}
+		// 			{
+		// 				"number": 11.3,
+		// 				"title": "Comprehend, evaluate, and manage risk."
+		// 			},
+		// 			{
+		// 				"number": 11.4,
+		// 				"title": "Plan and schedule a project to bring it in on time and resources."
+		// 			},
+		// 			{
+		// 				"number": 11.5,
+		// 				"title": "Outline a quality assurance plan for project management."
+		// 			},
+		// 			{
+		// 				"number": 11.6,
+		// 				"title": "Recognize the various types of benefits, costs, and risks in a projects life cycle."
+		// 			}
 
-				]
-			},
-			{
-				"id": "",
-				"number": 12,
-				"title": "Lifelong Learning",
-				"description": "An ability to identify and to address their own educational needs in a changing world in ways sufficient to maintain their competence and to allow them to contribute to the advancement of knowledge.",
-				"sub_ga": [{
-						"number": 12.1,
-						"title": "Identify how new knowledge enters the discipline via scholarly and industry related sources."
-					},
-					{
-						"number": 12.2,
-						"title": "Recognize the requirements for maintaining professional registration and/or licensing."
-					},
+		// 		]
+		// 	},
+		// 	{
+		// 		"id": "",
+		// 		"number": 12,
+		// 		"title": "Lifelong Learning",
+		// 		"description": "An ability to identify and to address their own educational needs in a changing world in ways sufficient to maintain their competence and to allow them to contribute to the advancement of knowledge.",
+		// 		"sub_ga": [{
+		// 				"number": 12.1,
+		// 				"title": "Identify how new knowledge enters the discipline via scholarly and industry related sources."
+		// 			},
+		// 			{
+		// 				"number": 12.2,
+		// 				"title": "Recognize the requirements for maintaining professional registration and/or licensing."
+		// 			},
 
-					{
-						"number": 12.3,
-						"title": "Identify deficiencies or gaps of one's understanding and knowledge."
-					},
-					{
-						"number": 12.4,
-						"title": "Evaluate information for authenticity, currency and objectivity."
-					}
+		// 			{
+		// 				"number": 12.3,
+		// 				"title": "Identify deficiencies or gaps of one's understanding and knowledge."
+		// 			},
+		// 			{
+		// 				"number": 12.4,
+		// 				"title": "Evaluate information for authenticity, currency and objectivity."
+		// 			}
 
-				]
-			}
-		]
+		// 		]
+		// 	}
+		// ]
 	};
 
 
