@@ -24,7 +24,7 @@ $.ajax({
 	success: function (response) {
 		console.log(response);
 		interfaceDB( GLOBAL_GA , response.result);
-		responseHandler(GLOBAL_GA);
+		//responseHandler(GLOBAL_GA);
 	}
 });
 
@@ -44,6 +44,7 @@ function interfaceDB( res1 , res2){
 		 var new_sga = sub_ga.filter(filterByNumb.bind(this, gn) );
   		 valueOfElement.sub_ga = new_sga;	
 	});
+	responseHandler(GLOBAL_GA);
 }
 
 function filterByNumb(n ,item){
@@ -297,20 +298,21 @@ function updateGA(numb, prev_title , new_title){
 			return false
 		}	
 	});
-
+	let data =  { "graduate_attribute": {"number":numb ,"title": new_title} };
 	///PUT TO SERVER
 	$.ajax({
 		type: "PUT",
 		url: baseUrl+"/forms/grad_attribute",
 		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'graduate_attribute': {"number":numb ,"title": new_title}},
-		dataType: "JSON",
+		data: JSON.stringify(data),
+		dataType: "json",
+		contentType: 'application/json',
 		success: function (response) {
-			alert('Attribute Updated '+ response.title);
+			alert('Attribute Updated ');
 			//window reload			
 		},
 		error : function(response){
-			alert("Something went wrong :/" +response.errors);
+			alert("Something went wrong :/ " +response);
 		}
 	});
 
@@ -333,12 +335,14 @@ function removeGA(numb, prev_title){
 	// console.log(temp.GA)
 
 	///DELETE Request TO SERVER
+	let data = { "graduate_attribute": {"number":numb ,"title": prev_title} };
 	$.ajax({
 		type: "DELETE",
-		url: baseUrl+"/forms/grad_attribute",
+		url: baseUrl+"/forms/grad_attribute"+"/"+numb,
 		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'graduate_attribute': {"number":numb ,"title": prev_title}},
-		dataType: "JSON",
+		data: JSON.stringify(data),
+		dataType: "json",
+		contentType: 'application/json',
 		success: function (response) {
 			alert('Attribute Removed '+ response.title);
 			//window reload			
@@ -370,11 +374,11 @@ function addGA(new_title){
 		data: JSON.stringify(data),
 		dataType: "json",
 		success: function (response) {
-			alert('Attribute Added '+ response.title);
+			alert('Attribute Added ');
 			//window reload			
 		},
 		error : function(response){
-			alert("Something went wrong :/" +response.errors);
+			alert("Something went wrong :/" );
 		}
 	});
 
@@ -395,19 +399,22 @@ function updateSubGA( numb, prev_title, new_title){
 		 }
 	});
 
+	let data = {'indicator': { "number": numb , "title":new_title }};
+
 	///PUT TO SERVER
 	$.ajax({
-		type: "POST",
-		url: baseUrl+"/forms/indicators",
+		type: "PUT",
+		url: baseUrl+"/forms/indicator",
 		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'indicator': { "number": numb , "title":"new_title" }},
-		dataType: "JSON",
+		data: JSON.stringify(data),
+		dataType: "json",
+		contentType: 'application/json',
 		success: function (response) {
-			alert('Indicator Updated '+ response.title);
+			alert('Indicator Updated ');
 			//window reload			
 		},
 		error : function(response){
-			alert("Something went wrong :/" +response.errors);
+			alert("Something went wrong :/" );
 		}
 	});
 
@@ -439,16 +446,16 @@ function removeSubGA( numb, prev_title){
 	///DELETE Request TO SERVER
 	$.ajax({
 		type: "DELETE",
-		url: baseUrl+"/forms/indicators",
+		url: baseUrl+"/forms/indicator"+"/"+numb,
 		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'indicator': { "number" : numb , "title": prev_title  }},
-		dataType: "JSON",
 		success: function (response) {
-			alert('Indicator Deleted '+ response.title);
-			//window reload			
+			alert('Indicator Deleted ');
+			setTimeout( function(){location.reload(true);} ,500);
+			
+	
 		},
 		error : function(response){
-			alert("Something went wrong :/" +response.errors);
+			alert("Something went wrong :/" );
 		}
 	});
 
@@ -465,20 +472,23 @@ function addSubGA(parent , s_title){
 			ga_attr.sub_ga.push(new_sub_ga);
 		}
 	});
-
+	let data = {"indicator": { "title": new_sub_ga.title , "number": Number(new_sub_ga.number.toFixed(2))}} ;
+	debugger
 	///POST TO SERVER
 	$.ajax({
 		type: "POST",
-		url: baseUrl+"/forms/indicators",
+		url: baseUrl+"/forms/indicator",
 		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'indicator': new_sub_ga},
-		dataType: "JSON",
+		data: JSON.stringify(data),
+		dataType: 'json',
+		contentType: 'application/json',
 		success: function (response) {
-			alert('Indicator Updated '+ response.title);
+			alert('Indicator Updated '+ response);
 			//window reload			
 		},
 		error : function(response){
-			alert("Something went wrong :/" +response.errors);
+			console.log(response);
+			alert("Something went wrong :/");
 		}
 	});
 
