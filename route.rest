@@ -1,11 +1,55 @@
 ###
 GET http://maciag.ursse.org/api/forms/grad_attributes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
 
 ###
-GET http://maciag.ursse.org/api/forms/indicators
-{
-
+GET  http://maciag.ursse.org/api/forms/indicators/2.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
+{ 
+   "indicator":{ 
+      "number":2.2
+   }
 }
+
+###
+DELETE  http://maciag.ursse.org/api/forms/indicators
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
+
+{ 
+   "indicator":{ 
+      "number":2.2
+   }
+}
+
+###
+GET  http://maciag.ursse.org/api/forms/indicators
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
+
+###
+PUT  http://maciag.ursse.org/api/forms/indicators
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
+
+{ 
+   "indicator":{ 
+      "number":2.2,
+      "title" : "NEw titel"
+   }
+}
+
+
+###
+POST  https://maciag.ursse.org/api/forms/indicators
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDU4NjQzMiwiaWF0IjoxNTc1NDAyNDMyfQ.eAlsuq1020lJPIpxrYKpI_Ls003d2sCA18o0HNajr9I
+
+{ 
+   "indicator":{ 
+      "number":2.3,
+      "title" : "NEw titel"
+   }
+}
+
 
 ###
 
@@ -20,6 +64,21 @@ GET http://maciag.ursse.org/api/users/login
 
 
 ###
+
+POST http://maciag.ursse.org/api/forms/indicators
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZTA2MDIyMzI2OTUxMDgzMWM3NjI0MSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTU4MDY3MjYyMiwiaWF0IjoxNTc1NDg4NjIyfQ.iNrPr0DaR6aBj19WD8RXeIn5502jz7GqyctgrLLD_OA
+
+{
+	"indicator": {
+		"number" : 2.3,
+		"title" : "Create mathematical expressions to describe physical phenomena (or a physical problem)."
+	}
+}
+
+
+
+
 
 
  $.ajax({

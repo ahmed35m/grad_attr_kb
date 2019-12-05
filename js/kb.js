@@ -1,5 +1,5 @@
 var token = localStorage.getItem('oba-token');
-var GLOBAL_ACCESS = 3;
+var GLOBAL_ACCESS = 6;
 var GLOBAL_GA ;//= fakeGetRequest();
 var baseUrl ="https://maciag.ursse.org/api";
 window.onload = function () {
@@ -11,9 +11,7 @@ $.ajax({
 	url: baseUrl +"/forms/grad_attributes",
 	headers: { 'Authorization': 'Bearer ' + token },
 	success: function (response) {
-		console.log('GA ');
 		console.log(response);
-		alert('First Get worked');
 		GLOBAL_GA = response.result;		
 	}
 });
@@ -24,9 +22,7 @@ $.ajax({
 	headers: { 'Authorization': 'Bearer ' + token },
 	dataType: "JSON",
 	success: function (response) {
-		console.log('SUB_GA ');
 		console.log(response);
-		alert('Second Get worked');
 		interfaceDB( GLOBAL_GA , response.result);
 		responseHandler(GLOBAL_GA);
 	}
@@ -36,8 +32,10 @@ $.ajax({
 
 function interfaceDB( res1 , res2){
 	//Update these res1 and res2
-	GLOBAL_GA =	  [ {"number": 1 , "title": "Intro"} ,{"number": 2 , "title": "Conclusion"}] ;      //res1.result ;// ga[]
-	var sub_ga = [ {"number": 1.1 , "title": "Background"},{"number": 1.2 , "title": "Lets go"} ,{"number": 2.1 , "title": "Conclusion Summary"}] ;  // res2.result // subga[]
+	GLOBAL_GA = res1;
+	//GLOBAL_GA =	  [ {"number": 1 , "title": "Intro"} ,{"number": 2 , "title": "Conclusion"}] ;      //res1.result ;// ga[]
+	var sub_ga = res2;
+	//var sub_ga = [ {"number": 1.1 , "title": "Background"},{"number": 1.2 , "title": "Lets go"} ,{"number": 2.1 , "title": "Conclusion Summary"}] ;  // res2.result // subga[]
 
 
 	$.each(GLOBAL_GA, function (indexInArray, valueOfElement) { 
@@ -361,14 +359,16 @@ function addGA(new_title){
 	new_attr.sub_ga = [{"number":new_attr.number+0.1 , "title" : "new sub ga" }];
 	temp.GA.push(new_attr);
 	console.log(temp.GA)
-
+	let data = {"graduate_attribute" :{"number":new_attr.number ,"title": new_attr.title} };
 	///POST TO SERVER
 	$.ajax({
 		type: "POST",
 		url: baseUrl+"/forms/grad_attribute",
-		headers: { 'Authorization': 'Bearer ' + token },
-		data: { 'graduate_attribute': {"number":new_attr.number ,"title": new_attr.title}},
-		dataType: "JSON",
+		headers: { 'Authorization': 'Bearer ' + token ,
+		},
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		dataType: "json",
 		success: function (response) {
 			alert('Attribute Added '+ response.title);
 			//window reload			
@@ -494,8 +494,8 @@ function toggleVisibility(ref) {
 }
 
 function editAcces() {
-	let resp = GLOBAL_GA;
-	return (resp.access >= 3 ? true : false);
+	let resp = 4
+	return (resp >= 3 ? true : false);
 }
 
 function fakeGetRequest() {
