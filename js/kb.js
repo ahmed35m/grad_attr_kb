@@ -499,5 +499,5 @@ function toggleVisibility(ref) {
 
 function editAccess() {
 	let resp = localStorage.getItem('role')
-	return (resp != 'Staff' | 'staff' ? true : false)
+	return (resp == 'Staff' || resp=='admin' ? true : false)
 }
