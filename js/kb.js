@@ -65,6 +65,7 @@ function interfaceDB(res1, res2) {
 	GLOBAL_GA = res1;
 	var sub_ga = res2;
 
+	$.each(GLOBAL_GA, function (indexInArray, valueOfElement) {
 		var gn = valueOfElement.number;
 
 		var new_sga = sub_ga.filter(filterByNumb.bind(this, gn));
@@ -72,6 +73,11 @@ function interfaceDB(res1, res2) {
 	});
 	responseHandler(GLOBAL_GA);
 }
+
+//Filter ga by number
+function filterByNumb(n, item) {
+	if (Math.trunc(item.number) == n) {
+		return true;
 	}
 	return false;
 }
