@@ -2,11 +2,6 @@ var token = localStorage.getItem('oba-token');
 var GLOBAL_GA ;
 var GLOBAL_SGA ;
 var baseUrl ="https://maciag.ursse.org/api";
-$(document).ready( function () {
-	//getData().then(responseHandler(interfaceDB(GLOBAL_GA ,GLOBAL_SGA)));
-
-});
-
 $.ajax({
 	type: "GET",
 	url: baseUrl +"/forms/grad_attributes",
